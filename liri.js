@@ -9,7 +9,7 @@ var spotify = new Spotify(keys.spotify);
 var searchSong = function (song) {
     spotify.search({ type: 'track', query: song, limit: 2})
     .then(function(response) {
-        var songs = response.tracks.items;
+        var songs = response.tracks.items[album];
         console.log(songs);
     })
     .catch(function(err) {
@@ -23,9 +23,10 @@ var concerThis = function (artist) {
         url:"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp",
         responseType:'stream'
       })
-        .then(function(response) {
-            console.log(response);
-        // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+        .then(function(res) {
+            console.log(
+        res.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+        );
       });
 }
 // searchSong();
@@ -38,10 +39,19 @@ function userInput(userInput1, userInput2) {
 
 // spotify-this-song
     if (userInput1 === "concert-this") {
-        concerThis(userInput2);
+       // concerThis(userInput2);
+     
+       console.log("==================================");
+       console.log("Band name = " + userInput2.toUpperCase());
+       concerThis(userInput2);
+       console.log("==================================");
 
     } else if (userInput1 === "spotify-this-song") {
         searchSong(userInput2);
+        console.log("==================================");
+        console.log("Song Searched = " + userInput2.toUpperCase());
+        concerThis(userInput2);
+        console.log("==================================");
        
     } else if (userInput1 === "movie-this") {
         console.log("movie-this");
